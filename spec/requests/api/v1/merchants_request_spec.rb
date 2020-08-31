@@ -16,4 +16,17 @@ describe "Merchants API" do
     expect(response).to be_successful
     expect(response.status).to eq(200)
   end
+
+  it "can create a merchant" do
+    merchant_params = { name: "Toys R Us" }
+
+    post '/api/v1/merchants', params: {item: merchant_params}
+
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+
+    merchant = Merchant.last
+
+    expect(merchant.name).to eq(merchant_params[:name])
+  end
 end
