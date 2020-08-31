@@ -9,6 +9,10 @@ gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'figaro'
 gem 'rake'
+gem 'faker'
+gem 'rack-cors'
+gem 'fast_jsonapi'
+
 
 
 group :development, :test do
@@ -19,6 +23,7 @@ group :development, :test do
   gem "pry"
   gem "simplecov"
   gem "shoulda-matchers"
+  gem 'factory_bot_rails'
 end
 
 group :development do
