@@ -4,10 +4,10 @@ describe "Items API" do
   before(:each) do
     create(:merchant)
     @merchant = Merchant.first
+    create_list(:item, 3, merchant: @merchant)
   end
 
   it "sends a list of items" do
-    create_list(:item, 3, merchant: @merchant)
 
     get '/api/v1/items'
 
@@ -31,5 +31,24 @@ describe "Items API" do
     expect(item.name).to eq(item_params[:name])
     expect(item.description).to eq(item_params[:description])
     expect(item.unit_price).to eq(item_params[:unit_price])
+  end
+
+  it "can update an item" do
+    item_params = { name: "Magic Beans", description: "They grow large bean stalks!", unit_price: 1.99, merchant_id: @merchant.id }
+
+    post '/api/v1/items', params: {item: item_params}
+
+    item = Item.last
+
+    item_params = { name: "Not Magic Beans", description: "They do not grow large bean stalks!", unit_price: 1.99, merchant_id: @merchant.id }
+
+    patch "/api/v1/items/#{item.id}", params: {item: item_params}
+
+    updated_item = Item.find(item.id)
+
+    expect(updated_item.name).to_not eq("Magic Beans")
+    expect(updated_item.name).to eq("Not Magic Beans")
+    expect(updated_item.description).to_not eq("They grow large bean stalks!")
+    expect(updated_item.description).to eq("They do not grow large bean stalks!")
   end
 end
