@@ -5,6 +5,7 @@ describe "Items API" do
     create(:merchant)
     @merchant = Merchant.first
     create_list(:item, 3, merchant: @merchant)
+    get '/api/v1/items'
   end
 
   it "sends a list of items" do
@@ -12,7 +13,7 @@ describe "Items API" do
     get '/api/v1/items'
 
     items = JSON.parse(response.body)
-    expect(items.count).to eq(3)
+    expect(items["data"].count).to eq(3)
 
     expect(response).to be_successful
     expect(response.status).to eq(200)
@@ -50,5 +51,19 @@ describe "Items API" do
     expect(updated_item.name).to eq("Not Magic Beans")
     expect(updated_item.description).to_not eq("They grow large bean stalks!")
     expect(updated_item.description).to eq("They do not grow large bean stalks!")
+  end
+
+  it "can delete an item" do
+    get '/api/v1/items'
+    items = JSON.parse(response.body)
+    expect(items["data"].count).to eq(3)
+
+    item = Item.last
+
+    delete "/api/v1/items/#{item.id}"
+
+    get '/api/v1/items'
+    items = JSON.parse(response.body)
+    expect(items["data"].count).to eq(2)
   end
 end
