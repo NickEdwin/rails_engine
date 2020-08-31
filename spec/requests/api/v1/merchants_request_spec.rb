@@ -46,4 +46,18 @@ describe "Merchants API" do
     expect(updated_merchant.name).to_not eq("Toys R Us")
     expect(updated_merchant.name).to eq("Toys R  No Longer Us")
   end
+
+  it "can delete a merchant" do
+    get '/api/v1/merchants'
+    merchants = JSON.parse(response.body)
+    expect(merchants["data"].count).to eq(5)
+
+    merchant = Merchant.last
+
+    delete "/api/v1/merchants/#{merchant.id}"
+
+    get '/api/v1/merchants'
+    merchants = JSON.parse(response.body)
+    expect(merchants["data"].count).to eq(4)
+  end
 end
