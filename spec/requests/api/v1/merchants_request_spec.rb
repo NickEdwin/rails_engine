@@ -3,6 +3,7 @@ require 'rails_helper'
 describe "Merchants API" do
   before(:each) do
     create_list(:merchant, 5)
+    @merchant = Merchant.last
     get '/api/v1/merchants'
   end
 
@@ -15,6 +16,14 @@ describe "Merchants API" do
 
     expect(response).to be_successful
     expect(response.status).to eq(200)
+  end
+
+  it "can show a merchant" do
+    get "/api/v1/merchants/#{@merchant.id}"
+    
+    merchant = JSON.parse(response.body)
+
+    expect(merchant["data"]["attributes"]["name"]).to eq(@merchant.name)
   end
 
   it "can create a merchant" do
