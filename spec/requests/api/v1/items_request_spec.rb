@@ -5,6 +5,7 @@ describe "Items API" do
     create(:merchant)
     @merchant = Merchant.first
     create_list(:item, 3, merchant: @merchant)
+    @item = Item.last
     get '/api/v1/items'
   end
 
@@ -17,6 +18,14 @@ describe "Items API" do
 
     expect(response).to be_successful
     expect(response.status).to eq(200)
+  end
+
+  it "can show an item" do
+    get "/api/v1/items/#{@item.id}"
+
+    item = JSON.parse(response.body)
+
+    expect(item["data"]["attributes"]["name"]).to eq(@item.name)
   end
 
   it "can create an item" do
