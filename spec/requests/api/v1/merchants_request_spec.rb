@@ -20,7 +20,7 @@ describe "Merchants API" do
 
   it "can show a merchant" do
     get "/api/v1/merchants/#{@merchant.id}"
-    
+
     merchant = JSON.parse(response.body)
 
     expect(merchant["data"]["attributes"]["name"]).to eq(@merchant.name)
@@ -64,6 +64,8 @@ describe "Merchants API" do
     merchant = Merchant.last
 
     delete "/api/v1/merchants/#{merchant.id}"
+
+    expect(response.status).to eq(204)
 
     get '/api/v1/merchants'
     merchants = JSON.parse(response.body)
