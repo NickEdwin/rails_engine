@@ -35,9 +35,18 @@ describe "Find API" do
     get '/api/v1/merchants/find_all?name=ring'
 
     merchants = JSON.parse(response.body)
-    
+
     expect(merchants["data"].count).to eq(2)
     expect(merchants["data"][0]["attributes"]["name"]).to eq(@merchant1.name)
     expect(merchants["data"][1]["attributes"]["name"]).to eq(@merchant2.name)
+  end
+
+  it "can find all items matching a name" do
+    get '/api/v1/items/find_all?name=banana'
+
+    items = JSON.parse(response.body)
+    expect(items["data"].count).to eq(2)
+    expect(items["data"][0]["attributes"]["name"]).to eq(@item1.name)
+    expect(items["data"][1]["attributes"]["name"]).to eq(@item2.name)
   end
 end
