@@ -71,6 +71,8 @@ describe "Items API" do
 
     delete "/api/v1/items/#{item.id}"
 
+    expect(response.status).to eq(204)
+    
     get '/api/v1/items'
     items = JSON.parse(response.body)
     expect(items["data"].count).to eq(2)
