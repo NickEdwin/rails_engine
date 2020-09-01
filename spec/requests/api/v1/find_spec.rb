@@ -30,4 +30,14 @@ describe "Find API" do
     expect(item["data"]["attributes"]["name"]).to eq(@item1.name)
     expect(item["data"]["attributes"]["name"]).to_not eq(@item2.name)
   end
+
+  it "can find all merchants matching a name" do
+    get '/api/v1/merchants/find_all?name=ring'
+
+    merchants = JSON.parse(response.body)
+    
+    expect(merchants["data"].count).to eq(2)
+    expect(merchants["data"][0]["attributes"]["name"]).to eq(@merchant1.name)
+    expect(merchants["data"][1]["attributes"]["name"]).to eq(@merchant2.name)
+  end
 end
