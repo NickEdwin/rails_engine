@@ -12,7 +12,7 @@ class Api::V1::ItemsSearchController < ApplicationController
 
   private
 
-    def item_params
-      params.permit(:name, :description, :created_at, :updated_at)
-    end
+  def item_params
+    params.permit(:name, :description, :created_at, :updated_at)
+  end
 end
