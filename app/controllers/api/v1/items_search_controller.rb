@@ -5,6 +5,11 @@ class Api::V1::ItemsSearchController < ApplicationController
     render json: ItemSerializer.new(item)
   end
 
+  def index
+    item = Item.where("name ilike ?", "%#{item_params[:name]}%")
+    render json: ItemSerializer.new(item)
+  end
+
   private
 
     def item_params
